@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=393, initial-scale=1.0">
 <title>Metro Transit Style Video with Clock & Expiration</title>
 <style>
-  html, body {
+  body, html {
     margin: 0;
     padding: 0;
     background: white;
-    width: 100%;
     height: 100%;
     font-family: Arial, sans-serif;
   }
 
   .video-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 393px;
+    height: 852px;
+    margin: auto;
+    background: white;
     overflow: hidden;
-    background-color: white;
   }
 
   video {
@@ -30,7 +30,7 @@
 
   .clock {
     position: absolute;
-    top: 55%;
+    top: 460px; /* Adjust to position above "Reduced" */
     left: 0;
     width: 100%;
     text-align: center;
@@ -43,12 +43,13 @@
 
   .reduced {
     position: absolute;
-    top: 63%;
-    left: 5%;
-    right: 5%;
+    top: 530px;
+    left: 20px;
+    right: 20px;
     background-color: #007A33;
     color: white;
     font-size: 32px;
+    font-weight: normal;
     text-align: center;
     border-radius: 20px;
     padding: 12px 0;
@@ -56,9 +57,9 @@
 
   .details {
     position: absolute;
-    bottom: 5%;
-    left: 5%;
-    right: 5%;
+    bottom: 80px;
+    left: 20px;
+    right: 20px;
     background-color: white;
     color: black;
     font-size: 18px;
@@ -89,12 +90,14 @@
 
   <!-- Ticket Details & Expiration -->
   <div class="details">
-    
+    Senior/Youth/Medicare Non-Rush Hour<br>
+    Minneapolis / St. Paul Metro Area
     <div class="expires" id="expires"></div>
   </div>
 </div>
 
 <script>
+  // Function to update the live digital clock
   function updateClock() {
     const now = new Date();
     let hours = now.getHours();
@@ -106,8 +109,9 @@
     document.getElementById("clock").textContent = formattedTime;
   }
 
+  // Function to set expiration time 2 hours from page load
   function setExpiration() {
-    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000);
+    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours later
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const datePart = expiration.toLocaleDateString(undefined, options);
     let hours = expiration.getHours();
