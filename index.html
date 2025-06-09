@@ -43,20 +43,7 @@
     transform: translateY(-50%);
   }
 
-  .reduced {
-    position: absolute;
-    top: 63%;
-    left: 10%;
-    right: 10%;
-    background-color: #007A33;
-    color: white;
-    font-size: 32px;
-    text-align: center;
-    border-radius: 20px;
-    padding: 12px 0;
-  }
-
-  .details {
+  .expires {
     position: absolute;
     bottom: 60px;
     left: 5%;
@@ -67,11 +54,8 @@
     border-radius: 8px;
     padding: 10px 15px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-
-  .expires {
     font-weight: bold;
-    margin-top: 6px;
+    text-align: center;
   }
 </style>
 </head>
@@ -86,33 +70,24 @@
   <!-- Current Time Clock -->
   <div class="clock" id="clock"></div>
 
-  <!-- Reduced Button -->
-  <div class="reduced">Reduced</div>
-
-  <!-- Ticket Details & Expiration -->
-  <div class="details">
-    Senior/Youth/Medicare Non-Rush Hour<br>
-    Minneapolis / St. Paul Metro Area
-    <div class="expires" id="expires"></div>
-  </div>
+  <!-- Expiration Only -->
+  <div class="expires" id="expires"></div>
 </div>
 
 <script>
-  // Function to update the live digital clock
   function updateClock() {
     const now = new Date();
     let hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-    const ampm = hours >= 12 ? 'AM' : 'PM'; // Metro Transit uses AM/PM lowercase
+    const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12 || 12;
     const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
     document.getElementById("clock").textContent = formattedTime;
   }
 
-  // Function to set expiration time 2 hours from page load
   function setExpiration() {
-    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours later
+    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000);
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const datePart = expiration.toLocaleDateString(undefined, options);
     let hours = expiration.getHours();
