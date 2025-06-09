@@ -2,60 +2,69 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Metro Transit Ticket Clone</title>
+<meta name="viewport" content="width=393, initial-scale=1.0">
+<title>Metro Transit Style Video with Clock & Expiration</title>
 <style>
   body, html {
     margin: 0;
     padding: 0;
     background: white;
-    font-family: Arial, sans-serif;
     height: 100%;
-    width: 100%;
+    font-family: Arial, sans-serif;
   }
 
-  .container {
-    width: 100%;
-    max-width: 430px;
+  .video-container {
+    position: relative;
+    width: 393px;
+    height: 852px;
     margin: auto;
-    text-align: center;
-    padding: 20px 10px;
+    background: white;
+    overflow: hidden;
   }
 
-  .logo {
-    margin-top: 40px;
-    margin-bottom: 20px;
-  }
-
-  .logo img {
-    width: 150px;
-    height: 150px;
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .clock {
-    font-size: 38px;
+    position: absolute;
+    top: 460px; /* Adjust to position above "Reduced" */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
     font-weight: bold;
-    color: #222;
-    margin-top: 10px;
-    margin-bottom: 15px;
+    color: black;
+    background-color: white;
+    padding: 5px 0;
   }
 
   .reduced {
+    position: absolute;
+    top: 530px;
+    left: 20px;
+    right: 20px;
     background-color: #007A33;
     color: white;
     font-size: 32px;
-    border-radius: 999px;
-    padding: 10px 0;
-    margin: 0 20px;
+    font-weight: normal;
+    text-align: center;
+    border-radius: 20px;
+    padding: 12px 0;
   }
 
   .details {
-    margin-top: 20px;
-    background-color: #fff;
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    right: 20px;
+    background-color: white;
+    color: black;
+    font-size: 18px;
     border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 17px;
-    color: #222;
+    padding: 10px 15px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
 
@@ -67,23 +76,19 @@
 </head>
 <body>
 
-<div class="container">
-  <!-- Metro Transit text -->
-  <h2 style="text-align: left; font-size: 20px; margin: 0 0 5px 0;">Metro Transit</h2>
-  <div style="text-align: left; font-size: 14px; margin-bottom: 20px; color: #555;">Show operator your ticket</div>
+<div class="video-container">
+  <video id="myVideo" autoplay muted playsinline>
+    <source src="yourvideo.MOV" type="video/quicktime">
+    Your browser does not support HTML5 video.
+  </video>
 
-  <!-- Logo Image (Replace 'yourlogo.png' with the actual image path if needed) -->
-  <div class="logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Metro_Transit_Go-To_logo.png/220px-Metro_Transit_Go-To_logo.png" alt="Go-To Logo">
-  </div>
-
-  <!-- Digital Clock -->
+  <!-- Current Time Clock -->
   <div class="clock" id="clock"></div>
 
   <!-- Reduced Button -->
-  <div class="reduced">Reduced</div>
+  
 
-  <!-- Details with Expiration -->
+  <!-- Ticket Details & Expiration -->
   <div class="details">
     Senior/Youth/Medicare Non-Rush Hour<br>
     Minneapolis / St. Paul Metro Area
@@ -92,6 +97,7 @@
 </div>
 
 <script>
+  // Function to update the live digital clock
   function updateClock() {
     const now = new Date();
     let hours = now.getHours();
@@ -103,8 +109,9 @@
     document.getElementById("clock").textContent = formattedTime;
   }
 
+  // Function to set expiration time 2 hours from page load
   function setExpiration() {
-    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000);
+    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours later
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const datePart = expiration.toLocaleDateString(undefined, options);
     let hours = expiration.getHours();
