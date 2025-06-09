@@ -1,46 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=393, initial-scale=1.0">
-  <title>Metro Transit Style Video with Clock</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      background: black;
-      height: 100%;
-      font-family: Arial, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=393, initial-scale=1.0">
+<title>Metro Transit Style Video with Clock & Expiration</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    background: white;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
 
-    .video-container {
-      position: relative;
-      width: 393px;
-      height: 852px;
-      margin: auto;
-      background: #000;
-      overflow: hidden;
-    }
+  .video-container {
+    position: relative;
+    width: 393px;
+    height: 852px;
+    margin: auto;
+    background: white;
+    overflow: hidden;
+  }
 
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-    .clock {
-      position: absolute;
-      top: 480px; /* Adjust to sit just above "Reduced" button as in your screenshot */
-      left: 0;
-      width: 100%;
-      text-align: center;
-      font-size: 40px; /* Adjust size as needed to match */
-      font-weight: bold;
-      color: black;
-      background-color: white;
-      padding: 8px 0;
-    }
-  </style>
+  .clock {
+    position: absolute;
+    top: 460px; /* Adjust to position above "Reduced" */
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    padding: 5px 0;
+  }
+
+  .reduced {
+    position: absolute;
+    top: 530px;
+    left: 20px;
+    right: 20px;
+    background-color: #007A33;
+    color: white;
+    font-size: 32px;
+    font-weight: normal;
+    text-align: center;
+    border-radius: 20px;
+    padding: 12px 0;
+  }
+
+  .details {
+    position: absolute;
+    bottom: 80px;
+    left: 20px;
+    right: 20px;
+    background-color: white;
+    color: black;
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  .expires {
+    font-weight: bold;
+    margin-top: 6px;
+  }
+</style>
 </head>
 <body>
 
@@ -50,26 +82,49 @@
     Your browser does not support HTML5 video.
   </video>
 
-  <!-- ⏰ Clock styled like Metro Transit pass -->
+  <!-- Current Time Clock -->
   <div class="clock" id="clock"></div>
+
+  <!-- Reduced Button -->
+  <div class="reduced">Reduced</div>
+
+  <!-- Ticket Details & Expiration -->
+  <div class="details">
+    Senior/Youth/Medicare Non-Rush Hour<br>
+    Minneapolis / St. Paul Metro Area
+    <div class="expires" id="expires"></div>
+  </div>
 </div>
 
 <script>
+  // Function to update the live digital clock
   function updateClock() {
     const now = new Date();
     let hours = now.getHours();
     const minutes = now.getMinutes();
     const seconds = now.getSeconds();
-    const ampm = hours >= 12 ? 'AM' : 'PM'; // Use AM/PM based on your screenshot
-    hours = hours % 12 || 12; // Convert to 12-hour format
-
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
     const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
     document.getElementById("clock").textContent = formattedTime;
   }
 
-  // Update every second
+  // Function to set expiration time 2 hours from page load
+  function setExpiration() {
+    const expiration = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours later
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    const datePart = expiration.toLocaleDateString(undefined, options);
+    let hours = expiration.getHours();
+    const minutes = expiration.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    const timePart = `${hours}:${String(minutes).padStart(2, '0')} ${ampm}`;
+    document.getElementById("expires").textContent = `Expires ${datePart} at ${timePart}`;
+  }
+
   setInterval(updateClock, 1000);
   updateClock();
+  setExpiration();
 </script>
 
 </body>
