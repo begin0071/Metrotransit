@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=393, initial-scale=1.0">
-  <title>iPhone 15 Pro Video Player with Timer</title>
+  <title>Metro Transit Style Video with Clock</title>
   <style>
     body, html {
       margin: 0;
@@ -11,7 +11,6 @@
       background: black;
       height: 100%;
       font-family: Arial, sans-serif;
-      color: white;
     }
 
     .video-container {
@@ -29,14 +28,17 @@
       object-fit: cover;
     }
 
-    .timer {
+    .clock {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 24px;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 8px 12px;
-      border-radius: 8px;
+      top: 480px; /* Adjust to sit just above "Reduced" button as in your screenshot */
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 40px; /* Adjust size as needed to match */
+      font-weight: bold;
+      color: black;
+      background-color: white;
+      padding: 8px 0;
     }
   </style>
 </head>
@@ -47,20 +49,27 @@
     <source src="yourvideo.MOV" type="video/quicktime">
     Your browser does not support HTML5 video.
   </video>
-  <div class="timer" id="timer">00:00</div>
+
+  <!-- ⏰ Clock styled like Metro Transit pass -->
+  <div class="clock" id="clock"></div>
 </div>
 
 <script>
-  const timerElement = document.getElementById("timer");
-  const video = document.getElementById("myVideo");
+  function updateClock() {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const ampm = hours >= 12 ? 'AM' : 'PM'; // Use AM/PM based on your screenshot
+    hours = hours % 12 || 12; // Convert to 12-hour format
 
-  video.addEventListener("timeupdate", () => {
-    const seconds = Math.floor(video.currentTime);
-    const minutes = Math.floor(seconds / 60);
-    const displaySeconds = String(seconds % 60).padStart(2, '0');
-    const displayMinutes = String(minutes).padStart(2, '0');
-    timerElement.textContent = `${displayMinutes}:${displaySeconds}`;
-  });
+    const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')} ${ampm}`;
+    document.getElementById("clock").textContent = formattedTime;
+  }
+
+  // Update every second
+  setInterval(updateClock, 1000);
+  updateClock();
 </script>
 
 </body>
